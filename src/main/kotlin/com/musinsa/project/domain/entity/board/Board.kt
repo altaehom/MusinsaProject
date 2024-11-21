@@ -1,7 +1,11 @@
 package com.musinsa.project.domain.entity.board
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Table
 import org.hibernate.annotations.DynamicUpdate
+import org.springframework.data.annotation.Id
 import java.time.Instant
 
 @Entity
