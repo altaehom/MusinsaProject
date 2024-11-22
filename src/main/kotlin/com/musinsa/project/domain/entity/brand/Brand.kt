@@ -45,4 +45,8 @@ class Brand private constructor(
         result = 31 * result + (updatedAt?.hashCode() ?: 0)
         return result
     }
+
+    companion object {
+        operator fun invoke(): Brand = Brand()
+    }
 }
