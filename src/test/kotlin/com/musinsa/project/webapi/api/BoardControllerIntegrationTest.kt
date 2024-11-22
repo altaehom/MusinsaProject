@@ -1,4 +1,4 @@
-package com.musinsa.project.domain.entity.board
+package com.musinsa.project.webapi.api
 
 import com.musinsa.project.MusinsaProjectApplication
 import org.junit.jupiter.api.Assertions.assertEquals
