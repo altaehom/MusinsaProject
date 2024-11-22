@@ -8,13 +8,9 @@ logging:
 spring:
   application:
     name: musinsa
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/test
+    url: jdbc:h2:mem:test
     username: sa
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
-@SpringBootTest
+@SpringBootTest(
+    properties = arrayOf("classpath:application-test.yml"),
+)
 @Transactional(readOnly = true)
 class BrandRepositoryTest {
     @Autowired
@@ -26,6 +28,8 @@ class BrandRepositoryTest {
     @Test
     @Transactional
     fun `CRUD Test`() {
-        // TODO
+        val brand = Brand().let { brandRepository.save(it) }
+
+        println(brand)
     }
 }

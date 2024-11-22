@@ -51,6 +51,8 @@ dependencies {
     runtimeOnly("com.oracle.database.jdbc:ojdbc11")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    runtimeOnly("com.h2database:h2")
+    testRuntimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("io.projectreactor:reactor-test")

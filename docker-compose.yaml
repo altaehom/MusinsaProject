@@ -1,13 +1,4 @@
 services:
-  musinsa-mysql:
-    image: 'mysql:latest'
-    environment:
-      - 'MYSQL_DATABASE=musinsa'
-      - 'MYSQL_PASSWORD=musinsa'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=musinsa'
-    ports:
-      - '56322:3306'
   musinsa-redis:
     image: 'redis:latest'
     ports:
