@@ -1,7 +1,7 @@
 package com.musinsa.project.application.brand
 
+import com.musinsa.project.application.exception.ApplicationException.BrandNotFoundException
 import com.musinsa.project.application.exception.ApplicationException.CommonException
-import com.musinsa.project.application.exception.ApplicationException.NotFoundException
 import com.musinsa.project.domain.entity.brand.Brand
 import com.musinsa.project.domain.service.brand.BrandDomainService
 import com.musinsa.project.domain.service.brand.model.BrandModel
@@ -61,7 +61,7 @@ class BrandAdminServiceTest {
 
         every { brandDomainService.get(id) }.returns(null)
 
-        assertFailsWith<NotFoundException> {
+        assertFailsWith<BrandNotFoundException> {
             mut.updateBrand(id, brandName)
         }
 
@@ -88,7 +88,7 @@ class BrandAdminServiceTest {
 
         every { brandDomainService.get(id) }.returns(null)
 
-        assertFailsWith<NotFoundException> {
+        assertFailsWith<BrandNotFoundException> {
             mut.removeBrand(id)
         }
 
