@@ -1,7 +1,7 @@
 package com.musinsa.project.application.brand
 
+import com.musinsa.project.application.exception.ApplicationException.BrandNotFoundException
 import com.musinsa.project.application.exception.ApplicationException.CommonException
-import com.musinsa.project.application.exception.ApplicationException.NotFoundException
 import com.musinsa.project.domain.service.brand.BrandDomainService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -38,5 +38,5 @@ class BrandAdminService(
         brandDomainService.delete(brand.id)
     }
 
-    private fun getModel(id: Long) = brandDomainService.get(id) ?: throw NotFoundException()
+    private fun getModel(id: Long) = brandDomainService.get(id) ?: throw BrandNotFoundException()
 }
