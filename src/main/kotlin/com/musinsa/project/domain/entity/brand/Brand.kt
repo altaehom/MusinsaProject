@@ -6,21 +6,39 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.SQLRestriction
 import java.time.Instant
 
 @Entity
 @DynamicUpdate
 @Table(name = "brand")
-class Brand private constructor(
-    val createdAt: Instant = Instant.now(),
-) {
+@SQLRestriction("deleted = false")
+class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
     var brandName: String = ""
     var deleted: Boolean = false
+    val createdAt: Instant = Instant.now()
     var updatedAt: Instant? = null
+
+    private fun create(brandName: String) =
+        apply {
+            this.brandName = brandName
+        }
+
+    fun modify(brandName: String) =
+        apply {
+            this.brandName = brandName
+            this.updatedAt = Instant.now()
+        }
+
+    fun remove() =
+        apply {
+            this.deleted = true
+            this.updatedAt = Instant.now()
+        }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -47,6 +65,6 @@ class Brand private constructor(
     }
 
     companion object {
-        operator fun invoke(): Brand = Brand()
+        operator fun invoke(brandName: String): Brand = Brand().create(brandName)
     }
 }
