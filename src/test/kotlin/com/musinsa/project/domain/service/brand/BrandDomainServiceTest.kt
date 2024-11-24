@@ -3,7 +3,11 @@ package com.musinsa.project.domain.service.brand
 import com.musinsa.project.domain.entity.brand.Brand
 import com.musinsa.project.domain.entity.brand.BrandRepository
 import com.musinsa.project.domain.exception.DomainException.DomainNotFoundException
+import com.musinsa.project.domain.service.brand.event.BrandDomainEvent.BrandCreatedEvent
+import com.musinsa.project.domain.service.brand.event.BrandDomainEvent.BrandDeletedEvent
+import com.musinsa.project.domain.service.brand.event.BrandDomainEvent.BrandUpdatedEvent
 import com.musinsa.project.domain.service.brand.model.BrandModel
+import com.musinsa.project.infra.event.DomainEventPublisher
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -12,7 +16,8 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
 import io.mockk.spyk
-import io.mockk.verify
+import io.mockk.verifyOrder
+import io.mockk.verifySequence
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -30,6 +35,7 @@ class BrandDomainServiceTest {
     @InjectMockKs
     private lateinit var mut: BrandDomainService
     private val brandRepository: BrandRepository = mockk(relaxed = true)
+    private val domainEventPublisher: DomainEventPublisher = mockk(relaxed = true)
     private val now = Instant.now()
 
     @BeforeEach
@@ -50,7 +56,14 @@ class BrandDomainServiceTest {
 
         mut.save(brandName)
 
-        verify { brandRepository.save(slot.captured) }
+        verifySequence {
+            brandRepository.save(slot.captured)
+            domainEventPublisher.publish(
+                withArg {
+                    it is BrandCreatedEvent && it.brandName == brandName
+                },
+            )
+        }
         assertEquals(slot.captured.brandName, brandName)
     }
 
@@ -107,7 +120,14 @@ class BrandDomainServiceTest {
 
         mut.update(id, changeBrandName)
 
-        verify { mockkBrand.modify(changeBrandName) }
+        verifyOrder {
+            mockkBrand.modify(changeBrandName)
+            domainEventPublisher.publish(
+                withArg {
+                    it is BrandUpdatedEvent && it.brandName == brandName && it.id == id
+                },
+            )
+        }
         assertEquals(mockkBrand.brandName, changeBrandName)
     }
 
@@ -136,7 +156,14 @@ class BrandDomainServiceTest {
 
         mut.delete(id)
 
-        verify { mockkBrand.remove() }
+        verifyOrder {
+            mockkBrand.remove()
+            domainEventPublisher.publish(
+                withArg {
+                    it is BrandDeletedEvent && it.id == id
+                },
+            )
+        }
         assertTrue(mockkBrand.deleted)
     }
 }
