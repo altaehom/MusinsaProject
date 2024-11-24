@@ -3,7 +3,7 @@ package com.musinsa.project.domain.service.brand.model
 import com.musinsa.project.domain.entity.brand.Brand
 import java.time.Instant
 
-data class BrandModel private constructor(
+data class BrandModel(
     val id: Long,
     val brandName: String,
     val createAt: Instant,
