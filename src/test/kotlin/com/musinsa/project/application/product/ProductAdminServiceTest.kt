@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.math.BigDecimal
+import java.time.Instant
 import kotlin.test.assertFailsWith
 
 @ExtendWith(MockKExtension::class)
@@ -151,7 +152,15 @@ class ProductAdminServiceTest {
         val productId = 1L
         val price = BigDecimal.ONE
 
-        every { productDomainService.get(productId) }.returns(ProductModel(spyk<Product>().apply { every { id }.returns(productId) }))
+        every { productDomainService.get(productId) }.returns(
+            ProductModel(
+                id = productId,
+                brandId = 2L,
+                categoryId = 3L,
+                price = BigDecimal.TEN,
+                Instant.now(),null
+            )
+        )
 
         mut.updateProduct(
             id = productId,
@@ -181,7 +190,15 @@ class ProductAdminServiceTest {
     fun `removeProduct_2_삭제 시에는 delete 메소드가 호출 된다`() {
         val productId = 1L
 
-        every { productDomainService.get(productId) }.returns(ProductModel(spyk<Product>().apply { every { id }.returns(productId) }))
+        every { productDomainService.get(productId) }.returns(
+            ProductModel(
+                id = productId,
+                brandId = 2L,
+                categoryId = 3L,
+                price = BigDecimal.TEN,
+                Instant.now(),null
+            )
+        )
 
         mut.removeProduct(productId)
         verify { productDomainService.delete(productId) }

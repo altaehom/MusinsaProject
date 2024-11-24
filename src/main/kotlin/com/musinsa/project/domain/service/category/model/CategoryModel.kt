@@ -3,7 +3,7 @@ package com.musinsa.project.domain.service.category.model
 import com.musinsa.project.domain.entity.category.Category
 import java.time.Instant
 
-data class CategoryModel private constructor(
+data class CategoryModel(
     val id: Long,
     val categoryName: String,
     val createdAt: Instant,
