@@ -89,12 +89,12 @@ class ProductDomainServiceTest {
         val categoryId = 1L
         val price = BigDecimal.valueOf(102030130)
         val mockkProduct =
-            spyk<Product> {
+            spyk<Product>(
                 Product(
                     categoryId = categoryId,
                     brandId = brandId,
                 )
-            }.apply {
+            ).apply {
                 this.id = id
                 this.price = price
             }

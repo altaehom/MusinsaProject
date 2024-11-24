@@ -4,7 +4,7 @@ import com.musinsa.project.domain.entity.product.Product
 import java.math.BigDecimal
 import java.time.Instant
 
-data class ProductModel private constructor(
+data class ProductModel(
     val id: Long,
     val brandId: Long,
     val categoryId: Long,
