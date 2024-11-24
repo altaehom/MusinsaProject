@@ -45,6 +45,19 @@ class ProductRepositoryTest {
         assertNull(productRepository.findByIdOrNull(product.id!!))
     }
 
+    @Test
+    fun `findByBrandId Test`() {
+        val brandId = 99L
+        val categoryId = 1L
+        val product =
+            Product(brandId, categoryId, price = ZERO)
+                .let { productRepository.save(it) }
+
+        val product2 = productRepository.findByBrandId(brandId)
+        assertNotNull(product2)
+        assertEquals(listOf(product), product2)
+    }
+
     companion object {
         private val ZERO = BigDecimal.ZERO.setScale(2)
     }
