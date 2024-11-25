@@ -54,6 +54,11 @@ class ProductDomainService(
             .findByIdOrNull(id)
             ?.let(ProductModel::invoke)
 
+    fun getByBrandId(brandId: Long) =
+        productRepository
+            .findByBrandId(brandId)
+            .map(ProductModel::invoke)
+
     private fun getEntity(id: Long) = productRepository.findByIdOrNull(id)
 
     @Transactional

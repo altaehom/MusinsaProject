@@ -12,4 +12,7 @@ class ProductRankingController(
 ) {
     @GetMapping(path = ["/category/lowest"])
     fun lowestProductByCategory() = rankingQueryService.getLowestPriceRankByCategory()
+
+    @GetMapping(path = ["/brand/lowest"])
+    fun lowestBrand() = rankingQueryService.lowestBrandPriceTotal()
 }
