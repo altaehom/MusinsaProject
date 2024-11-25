@@ -35,6 +35,16 @@ sealed class ProductDomainEvent : DomainEvent {
         override val aggregateType: String = AGG_NAME
     }
 
+    data class ProductRemovedEvent(
+        override val id: Long,
+        override val brandId: Long,
+        override val categoryId: Long,
+        override val price: BigDecimal,
+    ) : ProductDomainEvent() {
+        override val key: String = id.toString()
+        override val aggregateType: String = AGG_NAME
+    }
+
     data class ProductDeletedEvent(
         override val id: Long,
         override val brandId: Long,

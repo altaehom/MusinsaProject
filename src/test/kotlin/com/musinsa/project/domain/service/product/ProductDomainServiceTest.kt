@@ -4,7 +4,7 @@ import com.musinsa.project.domain.entity.product.Product
 import com.musinsa.project.domain.entity.product.ProductRepository
 import com.musinsa.project.domain.exception.DomainException.DomainNotFoundException
 import com.musinsa.project.domain.service.product.event.ProductDomainEvent.ProductCreatedEvent
-import com.musinsa.project.domain.service.product.event.ProductDomainEvent.ProductDeletedEvent
+import com.musinsa.project.domain.service.product.event.ProductDomainEvent.ProductRemovedEvent
 import com.musinsa.project.domain.service.product.event.ProductDomainEvent.ProductUpdatedEvent
 import com.musinsa.project.domain.service.product.model.ProductModel
 import com.musinsa.project.infra.event.DomainEventPublisher
@@ -195,7 +195,7 @@ class ProductDomainServiceTest {
             mockkProduct.remove()
             domainEventPublisher.publish(
                 withArg {
-                    it is ProductDeletedEvent && it.brandId == brandId && it.categoryId == categoryId && it.price == price
+                    it is ProductRemovedEvent && it.brandId == brandId && it.categoryId == categoryId && it.price == price
                 },
             )
         }
