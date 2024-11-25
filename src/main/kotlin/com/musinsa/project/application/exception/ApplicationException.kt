@@ -11,6 +11,8 @@ sealed class ApplicationException(
 
     class ProductPriceException : ApplicationException("Price is a negative quantity")
 
+    class RankingNotFoundException : ApplicationException("Not Found Rank!")
+
     class CommonException(
         msg: String,
     ) : ApplicationException(msg)
