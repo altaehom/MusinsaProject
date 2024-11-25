@@ -12,39 +12,54 @@ class CategoryRankingAccumulator(
     fun accumulate(
         score: BigDecimal,
         categoryId: Long,
-        value: String, // 브랜드 ㅑㅇ
+        value: String, // 브랜드 Id
     ) {
-        val key = makeKey(categoryId)
+        val key = makeCategoryRankingKey(categoryId)
         redisTemplate.executePipelined { conn ->
-            conn.openPipeline()
-            redisTemplate.opsForZSet().add(
-                key,
-                value,
+            val stringSerializer = redisTemplate.stringSerializer
+            val serializeKey = stringSerializer.serialize(key)!!
+
+            conn.zSetCommands().zAdd(
+                serializeKey,
                 score.toDouble(),
+                stringSerializer.serialize(value)!!,
             )
-            redisTemplate.expire(key, RANKING_TTL_HOURS)
-            conn.closePipeline()
+
+            conn.expire(
+                serializeKey,
+                RANKING_TTL_HOURS.toSeconds(),
+            )
+
             null
         }
     }
 
     fun remove(
         categoryId: Long,
-        value: String, // 브랜드
+        value: String, // 브랜드 Id
     ) {
-        val key = makeKey(categoryId)
+        val key = makeCategoryRankingKey(categoryId)
         val score = redisTemplate.opsForZSet().score(key, value) ?: return
 
         redisTemplate.executePipelined { conn ->
-            conn.openPipeline()
-            redisTemplate.opsForZSet().remove(key, value)
-            redisTemplate.expire(key, RANKING_TTL_HOURS)
-            conn.closePipeline()
+            val stringSerializer = redisTemplate.stringSerializer
+            val serializeKey = stringSerializer.serialize(key)!!
+
+            conn.zSetCommands().zRem(
+                serializeKey,
+                stringSerializer.serialize(value)!!,
+            )
+
+            conn.expire(
+                serializeKey,
+                RANKING_TTL_HOURS.toSeconds(),
+            )
+
             null
         }
     }
 
     companion object {
-        private fun makeKey(categoryId: Long): String = "CATEGORY::$categoryId"
+        fun makeCategoryRankingKey(categoryId: Long): String = "CATEGORY::$categoryId"
     }
 }

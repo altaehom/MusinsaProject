@@ -40,6 +40,11 @@ class BrandDomainService(
             .findByIdOrNull(id)
             ?.let(BrandModel::invoke)
 
+    fun gets(ids: Collection<Long>) =
+        brandRepository
+            .findAllById(ids)
+            .map(BrandModel::invoke)
+
     private fun getEntity(id: Long) = brandRepository.findByIdOrNull(id)
 
     @Transactional
