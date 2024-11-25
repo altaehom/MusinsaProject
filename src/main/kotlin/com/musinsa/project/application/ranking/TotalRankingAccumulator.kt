@@ -14,32 +14,45 @@ class TotalRankingAccumulator(
         value: String, // 브랜드 id
     ) {
         redisTemplate.executePipelined { conn ->
-            conn.openPipeline()
+            val stringSerializer = redisTemplate.stringSerializer
+            val serializeKey = stringSerializer.serialize(TOTAL_BRAND_RANKING_KEY_NAME)!!
 
-            redisTemplate.opsForZSet().incrementScore(
-                KEY_NAME,
-                value,
+            conn.zSetCommands().zIncrBy(
+                serializeKey,
                 score.toDouble(),
+                stringSerializer.serialize(value)!!,
             )
-            redisTemplate.expire(KEY_NAME, RANKING_TTL_HOURS)
 
-            conn.closePipeline()
+            conn.expire(
+                serializeKey,
+                RANKING_TTL_HOURS.toSeconds(),
+            )
+
             null
         }
     }
 
     fun remove(value: String) { // 브랜드 id
-        val score = redisTemplate.opsForZSet().score(KEY_NAME, value) ?: return
+        val score = redisTemplate.opsForZSet().score(TOTAL_BRAND_RANKING_KEY_NAME, value) ?: return
         redisTemplate.executePipelined { conn ->
-            conn.openPipeline()
-            redisTemplate.opsForZSet().remove(KEY_NAME, value)
-            redisTemplate.expire(KEY_NAME, RANKING_TTL_HOURS)
-            conn.closePipeline()
+            val stringSerializer = redisTemplate.stringSerializer
+            val serializeKey = stringSerializer.serialize(TOTAL_BRAND_RANKING_KEY_NAME)!!
+
+            conn.zSetCommands().zRem(
+                serializeKey,
+                stringSerializer.serialize(value)!!,
+            )
+
+            conn.expire(
+                serializeKey,
+                RANKING_TTL_HOURS.toSeconds(),
+            )
+
             null
         }
     }
 
     companion object {
-        private val KEY_NAME = "TOTAL::Brand"
+        val TOTAL_BRAND_RANKING_KEY_NAME = "TOTAL::Brand"
     }
 }
