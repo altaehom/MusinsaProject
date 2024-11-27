@@ -9,19 +9,21 @@ sealed class RankingEvent {
     abstract val brandId: Long
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    data class ProductRankingRemoveAllEvent(
+    data class BrandRankingRemoveAllEvent(
         @JsonProperty("id")
         override val brandId: Long,
     ) : RankingEvent()
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class ProductRankingRemoveEvent(
+        val id: Long,
         override val brandId: Long,
         val categoryId: Long,
     ) : RankingEvent()
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class ProductRankingUpsertEvent(
+        val id: Long, // Product id
         override val brandId: Long,
         val categoryId: Long,
         val beforePrice: BigDecimal?,
@@ -33,6 +35,7 @@ sealed class RankingEvent {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class ProductRankingChangeEvent(
+        val id: Long,
         override val brandId: Long,
         val categoryId: Long,
         val price: BigDecimal,

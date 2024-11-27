@@ -3,8 +3,8 @@ package com.musinsa.project.application.ranking.event
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.musinsa.project.application.ranking.event.RankingEvent.BrandRankingRemoveAllEvent
 import com.musinsa.project.application.ranking.event.RankingEvent.ProductRankingChangeEvent
-import com.musinsa.project.application.ranking.event.RankingEvent.ProductRankingRemoveAllEvent
 import com.musinsa.project.application.ranking.event.RankingEvent.ProductRankingRemoveEvent
 import com.musinsa.project.application.ranking.event.RankingEvent.ProductRankingUpsertEvent
 import com.musinsa.project.application.ranking.event.RankingEventType.BRAND_DELETED_EVENT
@@ -55,7 +55,7 @@ class RankingEventConverterTest {
                 payload = payload,
             )
 
-        assertEquals(result, ProductRankingRemoveAllEvent(1L))
+        assertEquals(result, BrandRankingRemoveAllEvent(1L))
     }
 
     @Test
@@ -72,7 +72,7 @@ class RankingEventConverterTest {
                 payload = payload,
             )
 
-        assertEquals(result, ProductRankingRemoveEvent(2L, 3L))
+        assertEquals(result, ProductRankingRemoveEvent(1L, 2L, 3L))
     }
 
     @Test
@@ -92,6 +92,7 @@ class RankingEventConverterTest {
         assertEquals(
             result,
             ProductRankingChangeEvent(
+                id = 1L,
                 brandId = 2L,
                 categoryId = 3L,
                 price = BigDecimal.TEN,
@@ -124,6 +125,7 @@ class RankingEventConverterTest {
         assertEquals(
             result,
             ProductRankingUpsertEvent(
+                id = 1L,
                 brandId = 3L,
                 categoryId = 2L,
                 price = BigDecimal.TEN,
@@ -156,6 +158,7 @@ class RankingEventConverterTest {
         assertEquals(
             result,
             ProductRankingUpsertEvent(
+                id = 1L,
                 brandId = 3L,
                 categoryId = 2L,
                 price = BigDecimal.TEN,

@@ -2,6 +2,7 @@ package com.musinsa.project.application.ranking
 
 import com.musinsa.project.application.exception.ApplicationException.RankingNotFoundException
 import com.musinsa.project.application.ranking.CategoryRankingAccumulator.Companion.makeCategoryRankingKey
+import com.musinsa.project.application.ranking.RankingConstants.getCategoryRankingValueBrandId
 import com.musinsa.project.application.ranking.TotalRankingAccumulator.Companion.TOTAL_BRAND_RANKING_KEY_NAME
 import com.musinsa.project.application.ranking.model.CategoryPriceRankModel
 import com.musinsa.project.application.ranking.model.LowestBrandTotalPriceModel
@@ -27,11 +28,11 @@ class RankingDataRetriever(
         val target =
             rankings
                 .filter { it.score?.toBigDecimal() == lowestPrice }
-                .sortedByDescending { it.value?.toLong() }
+                .sortedByDescending { it.value?.getCategoryRankingValueBrandId() }
                 .firstOrNull()
         return CategoryPriceRankModel(
             categoryId = categoryId,
-            brandId = target?.value?.toLong(),
+            brandId = target?.value?.getCategoryRankingValueBrandId(),
             price = target?.score?.toBigDecimal(),
         )
     }
@@ -59,11 +60,11 @@ class RankingDataRetriever(
         val target =
             rankings
                 .filter { it.score?.toBigDecimal() == highestPrice }
-                .sortedByDescending { it.value?.toLong() }
+                .sortedByDescending { it.value?.getCategoryRankingValueBrandId() }
                 .firstOrNull()
         return CategoryPriceRankModel(
             categoryId = categoryId,
-            brandId = target?.value?.toLong(),
+            brandId = target?.value?.getCategoryRankingValueBrandId(),
             price = target?.score?.toBigDecimal(),
         )
     }
