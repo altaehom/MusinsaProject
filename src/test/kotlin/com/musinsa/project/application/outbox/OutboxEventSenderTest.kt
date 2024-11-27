@@ -12,6 +12,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
+import io.mockk.verifyOrder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -25,6 +26,7 @@ class OutboxEventSenderTest {
     private val outboxDomainService: OutboxDomainService = mockk(relaxed = true)
     private val domainEventPublisher: DomainEventPublisher = mockk(relaxed = true)
     private val rankingEventConverter: RankingEventConverter = mockk(relaxed = true)
+    private val eventDuplicateChecker: EventDuplicateChecker = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -66,6 +68,28 @@ class OutboxEventSenderTest {
     }
 
     @Test
+    fun `send_2_이벤트가 이미 기처리 되었다면 return 된다`() {
+        val id = 1L
+        val outbox =
+            Outbox(
+                eventId = UUID.randomUUID().toString(),
+                eventType = "Test",
+                aggregateType = "aaaa",
+                header = "aa",
+                payload = "adwdawa",
+            )
+
+        every { outboxDomainService.getOne(id) }.returns(outbox)
+        every { eventDuplicateChecker.isDuplicate(outbox.eventId) }.returns(true)
+
+        mut.send(id)
+
+        verify(exactly = 0) { outboxDomainService.markPublish(any()) }
+        verify(exactly = 0) { domainEventPublisher.publish(any()) }
+        verify(exactly = 0) { eventDuplicateChecker.mark(outbox.eventId) }
+    }
+
+    @Test
     fun `send_3_이벤트 타입이 정의되어 있는 타입이 아니라면 return 된다`() {
         val id = 1L
         val outbox =
@@ -83,6 +107,7 @@ class OutboxEventSenderTest {
 
         verify { outboxDomainService.markPublish(outbox) }
         verify(exactly = 0) { domainEventPublisher.publish(any()) }
+        verify(exactly = 0) { eventDuplicateChecker.mark(outbox.eventId) }
     }
 
     @Test
@@ -101,7 +126,10 @@ class OutboxEventSenderTest {
 
         mut.send(id)
 
-        verify { outboxDomainService.markPublish(outbox) }
-        verify { domainEventPublisher.publish(ofType(RankingEvent::class)) }
+        verifyOrder {
+            domainEventPublisher.publish(ofType(RankingEvent::class))
+            outboxDomainService.markPublish(outbox)
+            eventDuplicateChecker.mark(outbox.eventId)
+        }
     }
 }

@@ -16,11 +16,13 @@ class OutboxEventSender(
     private val outboxDomainService: OutboxDomainService,
     private val domainEventPublisher: DomainEventPublisher,
     private val rankingEventConverter: RankingEventConverter,
+    private val eventDuplicateChecker: EventDuplicateChecker,
 ) {
     @Transactional
     fun send(id: Long) {
         val data = outboxDomainService.getOne(id) ?: return
         if (data.payload.isBlank()) throw IllegalStateException("payload is blank")
+        if (eventDuplicateChecker.isDuplicate(data.eventId)) return
 
         val eventType = RankingEventType.getType(data.eventType)
 
@@ -39,6 +41,7 @@ class OutboxEventSender(
             domainEventPublisher.publish(rankingEvent)
         }.onSuccess {
             outboxDomainService.markPublish(data)
+            eventDuplicateChecker.mark(data.eventId)
         }.onFailure { log.error("Send Error!", it) }
     }
 
