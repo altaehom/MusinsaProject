@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 import kotlin.test.assertEquals
@@ -16,7 +15,6 @@ import kotlin.test.assertNull
 @SpringBootTest(
     properties = ["classpath:application-test.yml"],
 )
-@ActiveProfiles("test")
 @Transactional
 class ProductRepositoryTest {
     @Autowired

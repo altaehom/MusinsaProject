@@ -8,6 +8,8 @@ logging:
     root: info
 
 spring:
+  profiles:
+    active: local
   application:
     name: musinsa
   h2:

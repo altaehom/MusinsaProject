@@ -6,7 +6,6 @@ import com.musinsa.project.application.exception.ApplicationException.ProductNot
 import com.musinsa.project.application.exception.ApplicationException.ProductPriceException
 import com.musinsa.project.domain.entity.brand.Brand
 import com.musinsa.project.domain.entity.category.Category
-import com.musinsa.project.domain.entity.product.Product
 import com.musinsa.project.domain.service.brand.BrandDomainService
 import com.musinsa.project.domain.service.brand.model.BrandModel
 import com.musinsa.project.domain.service.category.CategoryDomainService
@@ -158,8 +157,9 @@ class ProductAdminServiceTest {
                 brandId = 2L,
                 categoryId = 3L,
                 price = BigDecimal.TEN,
-                Instant.now(),null
-            )
+                Instant.now(),
+                null,
+            ),
         )
 
         mut.updateProduct(
@@ -196,8 +196,9 @@ class ProductAdminServiceTest {
                 brandId = 2L,
                 categoryId = 3L,
                 price = BigDecimal.TEN,
-                Instant.now(),null
-            )
+                Instant.now(),
+                null,
+            ),
         )
 
         mut.removeProduct(productId)

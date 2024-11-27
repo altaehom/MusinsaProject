@@ -30,7 +30,7 @@ class ProductAdminController(
     }
 
     @PutMapping(path = ["/{id}"])
-    fun updateBrand(
+    fun updateProduct(
         @PathVariable id: Long,
         @RequestBody request: UpdateProductAdminRequest,
     ) {
@@ -41,7 +41,7 @@ class ProductAdminController(
     }
 
     @DeleteMapping(path = ["/{id}"])
-    fun deleteBrand(
+    fun deleteProduct(
         @PathVariable id: Long,
     ) {
         productAdminService.removeProduct(id)
