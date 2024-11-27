@@ -2,8 +2,8 @@ package com.musinsa.project.application.ranking.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.musinsa.project.application.ranking.event.RankingEvent.BrandRankingRemoveAllEvent
 import com.musinsa.project.application.ranking.event.RankingEvent.ProductRankingChangeEvent
-import com.musinsa.project.application.ranking.event.RankingEvent.ProductRankingRemoveAllEvent
 import com.musinsa.project.application.ranking.event.RankingEvent.ProductRankingRemoveEvent
 import com.musinsa.project.application.ranking.event.RankingEvent.ProductRankingUpsertEvent
 import com.musinsa.project.application.ranking.event.RankingEventType.BRAND_DELETED_EVENT
@@ -29,7 +29,7 @@ class RankingEventConverter(
                 objectMapper.readValue<ProductRankingChangeEvent>(payload)
             }
             BRAND_DELETED_EVENT -> {
-                objectMapper.readValue<ProductRankingRemoveAllEvent>(payload)
+                objectMapper.readValue<BrandRankingRemoveAllEvent>(payload)
             }
             PRODUCT_DELETED_EVENT -> {
                 objectMapper.readValue<ProductRankingRemoveEvent>(payload)
