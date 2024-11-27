@@ -4,13 +4,6 @@
 
 ---
 
-## 📋 **목차**
-1. [소개](#소개)
-2. [설치](#설치)
-3. [사용법](#사용법)
-
----
-
 ## 💡 **소개**
 - 무신사 Java(Kotlin) Backend Engineer 과제 입니다.
 - 각각에 코드에 대한 설명은 코드에 주석으로 기재 했습니다.
@@ -128,8 +121,8 @@ erDiagram
     - 비밀번호:
 - Redis
     - Host: 127.0.0.1:56321
--  LocalServer
-- URL : http://localhost:8080
+- LocalServer
+  - URL : http://localhost:8080
 
 ### Postman Collection
 ```
@@ -138,7 +131,7 @@ src/main/resources/Musinsa Project.postman_collection.json
 
 ---
 
-## Init Data 실행
+## 📋Init Data 실행
 - H2 DB와 Redis를 사용함에 따라, 2개의 저장소에 데이터가 필히 존재해야, 기능이 동작하게 됩니다.
 - 별도의 Init Script를 사용하지 않고, IT 테스트를 이용하여 Local DB, Redis에 데이터를 적재 합니다.
 
