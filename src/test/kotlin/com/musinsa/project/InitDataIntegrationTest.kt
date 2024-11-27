@@ -179,6 +179,8 @@ class InitDataIntegrationTest {
         val brandName = "TestBrand"
         val categoies = categoryDomainService.getAll()
         val topCategory = categoies.find { it.categoryName == "상의" }!!
+
+        // 신규 브랜드 등록
         restTemplate
             .exchange<String>(
                 createURLWithPort(BRAND_API, port),
@@ -189,6 +191,8 @@ class InitDataIntegrationTest {
             brandDomainService
                 .getByBrandName(brandName)
                 .apply { kotlin.test.assertEquals(brandName, this.brandName) }
+
+        // 추가 한 브랜드 수정
         val newBrandName = "NewTestBrand"
         restTemplate.exchange<String>(
             createURLWithPort("$BRAND_API/${brand.id}", port),
@@ -199,6 +203,7 @@ class InitDataIntegrationTest {
             .get(brand.id)
             .apply { kotlin.test.assertEquals(newBrandName, this!!.brandName) }
 
+        // 신규 프로덕트 2건 추가
         restTemplate.exchange<String>(
             createURLWithPort("$PRODUCT_API", port),
             HttpMethod.POST,
@@ -226,6 +231,7 @@ class InitDataIntegrationTest {
 
         Thread.sleep(3000)
 
+        // 신규 추가 제품 반영 확인
         restTemplate
             .exchange<String>(
                 createURLWithPort("$RANKING_API_BASE$CATEGORY_HIGH_LOW?categoryName=상의", port),
@@ -240,6 +246,7 @@ class InitDataIntegrationTest {
 
         val products = productDomainService.getByBrandId(brand.id).sortedByDescending { it.price }
 
+        // 신규 추가 제품 가격 변경
         restTemplate.exchange<String>(
             createURLWithPort("$PRODUCT_API/${products.first().id}", port),
             HttpMethod.PUT,
@@ -253,6 +260,7 @@ class InitDataIntegrationTest {
 
         Thread.sleep(3000)
 
+        // 가격 변경 반영 확인
         restTemplate
             .exchange<String>(
                 createURLWithPort("$RANKING_API_BASE$BRAND_WISE_LOWEST", port),
@@ -276,6 +284,7 @@ class InitDataIntegrationTest {
                 )
             }
 
+        // 신규 추가 제품 삭제
         restTemplate.exchange<String>(
             createURLWithPort("$PRODUCT_API/${products.first().id}", port),
             HttpMethod.DELETE,
@@ -287,6 +296,7 @@ class InitDataIntegrationTest {
 
         Thread.sleep(3000)
 
+        // 삭제 된 제품 반영 확인
         restTemplate
             .exchange<String>(
                 createURLWithPort("$RANKING_API_BASE$CATEGORY_WISE_LOWEST", port),
@@ -299,6 +309,7 @@ class InitDataIntegrationTest {
                 )
             }
 
+        // 신규 추가 브랜드 삭제 (새롭게 추가 한 제품 관련 된 것은 삭제 됨)
         restTemplate.exchange<String>(
             createURLWithPort("/v1/brand/${brand.id}", port),
             HttpMethod.DELETE,

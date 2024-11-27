@@ -1,5 +1,8 @@
 package com.musinsa.project.application.exception
 
+/**
+ * 비즈니스 로직에서 발생하는 익셉션
+ */
 sealed class ApplicationException(
     private val msg: String,
 ) : RuntimeException(msg) {
