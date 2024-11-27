@@ -10,6 +10,7 @@ import com.musinsa.project.domain.service.product.event.ProductDomainEvent.Produ
 import com.musinsa.project.domain.service.product.model.ProductModel
 import com.musinsa.project.infra.event.DomainEventPublisher
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Profile
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -116,6 +117,10 @@ class ProductDomainService(
                 )
             }
     }
+
+    @Profile("test")
+    @Transactional
+    fun clear() = productRepository.clear()
 
     companion object {
         private val log = LoggerFactory.getLogger(this::class.java)

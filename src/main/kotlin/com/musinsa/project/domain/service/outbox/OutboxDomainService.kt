@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.musinsa.project.domain.entity.outbox.Outbox
 import com.musinsa.project.domain.entity.outbox.OutboxRepository
 import com.musinsa.project.infra.event.Events.OutboxEvent
+import org.springframework.context.annotation.Profile
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -33,4 +34,8 @@ class OutboxDomainService(
     fun markPublish(outbox: Outbox) {
         outbox.published()
     }
+
+    @Profile("test")
+    @Transactional
+    fun clear() = outboxRepository.clear()
 }

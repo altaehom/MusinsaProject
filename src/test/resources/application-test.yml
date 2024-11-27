@@ -6,6 +6,8 @@ logging:
     root: info
 
 spring:
+  profiles:
+    active: test
   application:
     name: musinsa
   datasource:
