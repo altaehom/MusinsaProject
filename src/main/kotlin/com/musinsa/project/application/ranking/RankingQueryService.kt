@@ -52,7 +52,12 @@ class RankingQueryService(
         val rank = rankingDataRetriever.getLowestBrandTotalPriceRank()
         val brand = brandDomainService.get(rank.brandId) ?: throw BrandNotFoundException()
         val categories = categoryDomainService.getAll().associateBy { it.id }
-        val products = productDomainService.getByBrandId(rank.brandId)
+        val products =
+            productDomainService
+                .getByBrandId(rank.brandId)
+                .groupBy { it.categoryId }
+                .map { it.value.minByOrNull { it.price } }
+                .filterNotNull()
 
         return BrandWiseLowestRankingResponse(
             item =
