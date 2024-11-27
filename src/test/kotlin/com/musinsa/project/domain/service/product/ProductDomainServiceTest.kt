@@ -93,7 +93,7 @@ class ProductDomainServiceTest {
                 Product(
                     categoryId = categoryId,
                     brandId = brandId,
-                )
+                ),
             ).apply {
                 this.id = id
                 this.price = price

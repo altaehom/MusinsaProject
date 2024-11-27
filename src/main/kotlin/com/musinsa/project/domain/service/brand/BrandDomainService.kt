@@ -9,6 +9,7 @@ import com.musinsa.project.domain.service.brand.event.BrandDomainEvent.BrandUpda
 import com.musinsa.project.domain.service.brand.model.BrandModel
 import com.musinsa.project.infra.event.DomainEventPublisher
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Profile
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -74,6 +75,13 @@ class BrandDomainService(
             ?.also { domainEventPublisher.publish(BrandDeletedEvent(id)) }
             ?: throw DomainNotFoundException(id)
     }
+
+    @Profile("test")
+    @Transactional
+    fun clear() = brandRepository.clear()
+
+    @Profile("test")
+    fun getByBrandName(brandName: String) = brandRepository.findByBrandName(brandName).first().let(BrandModel::invoke)
 
     companion object {
         private val log = LoggerFactory.getLogger(this::class.java)
