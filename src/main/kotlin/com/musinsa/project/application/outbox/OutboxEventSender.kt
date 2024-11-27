@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * 도메인 서비스에서 사출 된 도메인 이벤트를 전송하는 클래스
+ */
 @Component
 class OutboxEventSender(
     private val outboxDomainService: OutboxDomainService,

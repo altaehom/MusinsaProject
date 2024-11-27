@@ -5,6 +5,9 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
+/**
+ * 전달 된 랭킹 반영 이벤트를 N개의 브랜드의 총합 가격이 담겨 있는 zset에 저장하는 클래스
+ */
 @Component
 class TotalRankingAccumulator(
     private val redisTemplate: RedisTemplate<String, String>,

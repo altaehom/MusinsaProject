@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.math.BigDecimal
 
+/**
+ * Ranking에 반영 시키는 이벤트
+ */
 sealed class RankingEvent {
     abstract val brandId: Long
 
