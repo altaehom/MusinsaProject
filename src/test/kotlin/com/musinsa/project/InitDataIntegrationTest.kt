@@ -203,7 +203,7 @@ class InitDataIntegrationTest {
             .get(brand.id)
             .apply { kotlin.test.assertEquals(newBrandName, this!!.brandName) }
 
-        // 신규 프로덕트 2건 추가
+        // 신규 제품 2건 추가
         restTemplate.exchange<String>(
             createURLWithPort("$PRODUCT_API", port),
             HttpMethod.POST,

@@ -24,7 +24,7 @@ class RankingDataRetriever(
 
     /**
      * 카테고리 별 브랜드 가격 랭킹을 정방향으로 조회 하는 메소드
-     * 브랜드 별 랭킹에서 동일한 가격이라면, 비교적 최근에 등록 된 브랜드를 반환
+     * 동일한 가격이라면, 비교적 최근에 등록 된 브랜드를 반환
      */
     fun getCategoryPriceRankAsc(categoryId: Long): CategoryPriceRankModel {
         val key = makeCategoryRankingKey(categoryId)
@@ -63,7 +63,7 @@ class RankingDataRetriever(
 
     /**
      * 카테고리 별 브랜드 가격 랭킹을 역방향으로 조회 하는 메소드
-     * 브랜드 별 랭킹에서 동일한 가격이라면, 비교적 최근에 등록 된 브랜드를 반환
+     * 동일한 가격이라면, 비교적 최근에 등록 된 브랜드를 반환
      */
     fun getCategoryPriceRankDesc(categoryId: Long): CategoryPriceRankModel {
         val key = makeCategoryRankingKey(categoryId)

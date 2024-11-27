@@ -8,7 +8,7 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 
 /**
- * 전달 받은 랭킹 이벤트를 기준으로, 레디스에 적재 하는 이벤트 리스너
+ * 전달 받은 랭킹 이벤트를 가지고 랭킹에 적재 처리를 위임하는 이벤트 리스너
  */
 @Component
 class RankingEventListener(
@@ -54,7 +54,7 @@ class RankingEventListener(
     }
 
     /**
-     * 제품 삭제 되었을 때, 카테고리 랭킹에 존재하는 브랜드 상품을 삭제, 총합 랭킹에서는 삭제 된 상품의 가격 만큼 Score를 변경
+     * 제품 삭제 되었을 때, 카테고리 랭킹에 존재하는 브랜드 상품을 삭제, 총합 랭킹에서는 삭제 된 상품의 가격 만큼 Score를 차감
      */
     @EventListener
     fun handle(event: ProductRankingChangeEvent) {

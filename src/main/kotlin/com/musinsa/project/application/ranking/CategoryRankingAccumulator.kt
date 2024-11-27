@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
 /**
- * 전달 된 랭킹 반영 이벤트를 zset에 저장하는 클래스
+ * 브랜드 상품 가격을 Command 하는 클래스
  * zset은 카테고리 별로 존재
  */
 @Component
